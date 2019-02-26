@@ -1,0 +1,27 @@
+{
+  "name": "root",
+  "private": true,
+  "nohoist": [
+    "**/react-scripts",
+    "**/react-scripts/**"
+  ],
+  "scripts": {
+    "ship": "lerna publish",
+    "prepublishOnly": "yarn run build",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "devDependencies": {
+    "lerna": "^3.4.3",
+    "prettier": "^1.15.2",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.1.6"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
