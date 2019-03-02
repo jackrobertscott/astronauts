@@ -11,13 +11,57 @@ const store = new Store({ id: '/* your astronauts id */' });
 
 const ReactHookComponent = () => {
   const { user } = useStore({
-    user: store.single('users')
-      .filter({
-        match: { firstName: 'Fred' },
+    user: store.use('users')
+      .first()
+      .where({
+        firstName: 'Fred',
       })
       .data({
         firstName: '',
         role: 'standard',
+        favourites: store.use('candies')
+          .stage({
+            $lookup: {
+              from: 'companies',
+              localField: '_id',
+              foreignField: 'treats',
+              as: 'maker',
+            },
+          })
+          .stage({
+            $group: {
+              _id: 'color',
+              name: '$name',
+              maker: '$maker',
+            },
+          })
+          .data({
+            name: '',
+            color: '',
+          });
+        friends: ({ id }) => store.use('friendship')
+          .first()
+          .where({
+            $or: [
+              { primary: id },
+              { secondary: id },
+            ],
+          })
+          .data({
+            age: 0,
+            primary: ({ id }) => store.use('user')
+              .where({ id })
+              .data({
+                name: '',
+                email: (_, { name }) => `${name}@example.com`,
+              }),
+            secondary: ({ id }) => store.use('user')
+              .where({ id })
+              .data({
+                name: '',
+                email: '',
+              }),
+          });
       });
   });
   return (
