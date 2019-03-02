@@ -1,4 +1,5 @@
-import Structure from './Structure';
+import { Structure } from './Structure';
+import { Fetch } from './Fetch';
 
 export interface IStoreOptions {
   id: string;
@@ -14,11 +15,13 @@ export interface IStoreStructure {
  * as the data changes on both the client and the
  * server.
  */
-export default class Store {
+export class Store {
   private id: string;
+  private fetch: Fetch;
 
   constructor({ id }: IStoreOptions) {
     this.id = id;
+    this.fetch = new Fetch({ id });
   }
 
   public use(tree: IStoreStructure) {
@@ -33,6 +36,10 @@ export default class Store {
      * object straight away with defaults. But also, wait until the "use"
      * function is called before we actually start sending requests to
      * the server.
+     *
+     * 1. Send digest tree to out to fetch from client - or should we move this to the Structure class?
+     * 2. Return the values which should be used by the user.
+     * 3. Listen for changes from within the collection itself.
      */
     const digests = Object.keys(tree).reduce((accum, next) => {
       return {
@@ -40,11 +47,9 @@ export default class Store {
         [next]: tree[next].digest(),
       };
     }, {});
-    /**
-     * 1. Send digest tree to out to fetch from client - or should we move this to the Structure class?
-     * 2. Return the values which should be used by the user.
-     * 3. Listen for changes.
-     */
+    this.fetch.data(digests, {
+      action: 'batch',
+    });
   }
 
   public single(domain: string) {

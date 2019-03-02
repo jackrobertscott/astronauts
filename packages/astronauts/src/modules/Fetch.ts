@@ -16,7 +16,7 @@ export interface IFetchSendOptions {
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
  */
-export default class Fetch {
+export class Fetch {
   private id: string;
 
   constructor({ id }: IFetchOptions) {

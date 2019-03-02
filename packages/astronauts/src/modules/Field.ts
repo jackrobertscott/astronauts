@@ -3,7 +3,7 @@
  * which has been returned from the database. It should
  * handle updates into and out of the property.
  */
-export default class Field {
+export class Field {
   private current: any;
 
   constructor(current: any) {

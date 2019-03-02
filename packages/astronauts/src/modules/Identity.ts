@@ -3,4 +3,4 @@
  * which are related to changing the users authentication
  * status.
  */
-export default class Identify {}
+export class Identify {}

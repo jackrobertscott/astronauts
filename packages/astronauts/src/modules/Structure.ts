@@ -21,7 +21,7 @@ export interface IDataStructure {
  * This module controls a specific store structure
  * object.
  */
-export default class Structure {
+export class Structure {
   private domain: string;
   private type: IType;
   private query: IQueryOptions = {};
@@ -32,12 +32,14 @@ export default class Structure {
     this.type = type;
   }
 
-  public filters(options: IQueryOptions) {
+  public filters(options: IQueryOptions): Structure {
     this.query = { ...(this.query || {}), ...(options || {}) };
+    return this;
   }
 
-  public data(options: IDataStructure) {
+  public data(options: IDataStructure): Structure {
     this.structure = { ...(this.structure || {}), ...(options || {}) };
+    return this;
   }
 
   public digest() {

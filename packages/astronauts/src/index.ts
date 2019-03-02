@@ -1,1 +1,1 @@
-console.log('astronauts');
+export * from './modules/Store';
