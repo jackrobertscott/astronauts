@@ -19,6 +19,7 @@ const ReactHookComponent = () => {
       .data({
         firstName: '',
         role: 'standard',
+        company: null,
         favourites: store.use('candies')
           .stage({
             $lookup: {
@@ -71,6 +72,9 @@ const ReactHookComponent = () => {
         value={user.firstName.value}
         onChange={event => user.firstName.change(event.target.value)}
       />
+      {companies.map(({ id, name }) => (
+        <div key={id} onClick={() => user.company.change(id)}>{name}</div>
+      ))}
     </div>
   );
 };
