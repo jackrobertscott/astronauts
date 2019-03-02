@@ -48,15 +48,22 @@ export class Fetch {
    * Send anything to the server.
    */
   public core(data: any, { action, type }: IFetchSendOptions) {
-    const headers = new Headers();
-    headers.set('Content-Type', type);
-    headers.set('Bearer', this.id);
     const options = {
       method: 'post',
-      headers,
+      mode: 'cors' as any,
+      headers: {
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers':
+          'access-control-allow-credentials,access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,content-type',
+        'Content-Type': 'application/json',
+      },
       body: data,
     };
     const resolve = (response: Response) => response.json();
-    return fetch(`${config.endpoint}/${action}`, options).then(resolve);
+    return fetch(`${config.endpoint}/${action}`, options)
+      .then(resolve)
+      .then(console.log);
   }
 }
