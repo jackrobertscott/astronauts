@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { useConnection } from 'nuggets';
+import { useConnection, Frame } from 'nuggets';
 import gql from 'graphql-tag';
-import Example from '../components/Example';
+import { Input } from '../components/Input';
 import { queryConnection } from '../services/queryConnection';
+import { Main } from '../components/Main';
+import { Button } from '../components/Button';
 
 interface IGetUser {
   projectsAll: Array<{
@@ -26,8 +28,19 @@ export default () => {
     defaults: { query },
   });
   useEffect(() => execute(), []);
-  console.log(
-    value && value.projectsAll && value.projectsAll.map(item => item.name)
+  return (
+    <Main>
+      <Input label="Username" placeholder="E.g. jack" />
+      <Input label="Password" placeholder="**********" />
+      <Frame
+        styles={{
+          direction: 'right',
+          force: 'between',
+        }}
+      >
+        <Button value="Sign In" />
+        <Button value="Create Account" subtle={true} />
+      </Frame>
+    </Main>
   );
-  return <Example />;
 };

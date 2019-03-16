@@ -8218,10 +8218,10 @@ nth-check@^1.0.2, nth-check@~1.0.1:
   dependencies:
     boolbase "~1.0.0"
 
-nuggets@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/nuggets/-/nuggets-1.0.5.tgz#5f2d5547864930b246730a963dd3edb4ac9f0964"
-  integrity sha512-g833CADidnnONohXaDAbyyvUPC4NhDGxyaSAGm2paElY2rT3nbRpzuwemxwLhcYqpzmtY6gkB0lNdldZ1q9plQ==
+nuggets@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/nuggets/-/nuggets-1.0.6.tgz#5cdd8de3479b9c4feb4663e53ed8661eaca3727a"
+  integrity sha512-PYKcaNSArIVzxtevsHZn7h1zPN12NtETT1cjgifOFd7ypZxkhynpnoI7WnQUtLc7j4meXsF/oz0E5ejas8X2kQ==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/sheet" "^0.9.2"
