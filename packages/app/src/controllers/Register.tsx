@@ -25,11 +25,7 @@ export const GetUser = gql`
 export const Register: FunctionComponent<{}> = () => {
   const { change: navigate } = useAddress();
   const { value, execute } = useConnection<IGetUser>({
-    connection: queryConnection({
-      defaults: {
-        query: GetUser,
-      },
-    }),
+    connection: queryConnection({ query: GetUser }),
   });
   useEffect(() => execute(), []);
   return (
