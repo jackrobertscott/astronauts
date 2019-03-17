@@ -24,10 +24,11 @@ export const GetUser = gql`
 
 export const Register: FunctionComponent<{}> = () => {
   const { value, execute } = useConnection<IGetUser>({
-    connection: queryConnection,
-    defaults: {
-      query: GetUser,
-    },
+    connection: queryConnection({
+      defaults: {
+        query: GetUser,
+      },
+    }),
   });
   useEffect(() => execute(), []);
   return (
