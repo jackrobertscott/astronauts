@@ -1,5 +1,5 @@
 import React, { useEffect, FunctionComponent } from 'react';
-import { useConnection, Frame } from 'nuggets';
+import { useConnection, Frame, useAddress } from 'nuggets';
 import gql from 'graphql-tag';
 import { Input } from '../components/Input';
 import { queryConnection } from '../services/queryConnection';
@@ -23,6 +23,7 @@ export const GetUser = gql`
 `;
 
 export const Register: FunctionComponent<{}> = () => {
+  const { change: navigate } = useAddress();
   const { value, execute } = useConnection<IGetUser>({
     connection: queryConnection({
       defaults: {
@@ -42,8 +43,8 @@ export const Register: FunctionComponent<{}> = () => {
           force: 'between',
         }}
       >
-        <Button value="Register" />
-        <Button value="Login" subtle={true} />
+        <Button value="Register" click={() => navigate('/register')} />
+        <Button value="Login" click={() => navigate('/login')} subtle={true} />
       </Frame>
     </Main>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Login } from './controllers/Login';
+import MainRoutes from './controllers/MainRoutes';
 
 /**
  * Hooks don't work on the root component...
  */
-export default () => <Login />;
+export default () => <MainRoutes />;
