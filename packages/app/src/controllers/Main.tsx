@@ -9,6 +9,7 @@ export interface IMainProps {}
 
 export const Main: FunctionComponent<IMainProps> = () => {
   const storeAuth = useStore({ store: authStore });
+  const { match } = useAddress();
   useEffect(() => {
     try {
       const data = localStorage.getItem('auth');
@@ -20,7 +21,6 @@ export const Main: FunctionComponent<IMainProps> = () => {
       localStorage.removeItem('auth');
     }
   }, []);
-  const { match } = useAddress();
   const current = [
     { path: '/login', exact: true, route: Login },
     { path: '/register', route: Register },

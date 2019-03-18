@@ -55,6 +55,9 @@ export const Login: FunctionComponent<{}> = () => {
         localStorage.setItem('auth', JSON.stringify(data));
         storeAuth.change(data);
         address.change('/account');
+      })
+      .catch(() => {
+        localStorage.removeItem('auth');
       });
   };
   return (

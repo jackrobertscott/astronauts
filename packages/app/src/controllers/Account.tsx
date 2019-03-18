@@ -8,7 +8,7 @@ import { query, mutation } from '../services/apollo';
 
 export const LoadUserAccount = query({
   action: gql`
-    mutation LoadUserAccount {
+    query LoadUserAccount {
       usersMe {
         id
         name
@@ -30,8 +30,8 @@ export interface ILoadUserAccount {
 
 export const SaveUserAccount = mutation({
   action: gql`
-    mutation SaveUserAccount($id: String!) {
-      usersEdit(id: $id) {
+    mutation SaveUserAccount($id: String!, $values: UserValuesInput!) {
+      usersEdit(id: $id, values: $values) {
         id
       }
     }
@@ -54,14 +54,18 @@ export const Account: FunctionComponent<{}> = () => {
   useEffect(() => {
     actionLoadUserAccount.execute();
   }, []);
-  console.log(actionLoadUserAccount.value);
-  const account = useComplex();
+  const me = actionLoadUserAccount.value && actionLoadUserAccount.value.usersMe;
+  const account = useComplex({ value: me });
   const name = useString(account.operate('name'));
   const email = useString(account.operate('email'));
   const submit = () => {
     actionSaveUserAccount.execute({
       variables: {
-        values: account.value,
+        id: me && me.id,
+        values: {
+          name: account.value && account.value.name,
+          email: account.value && account.value.email,
+        },
       },
     });
   };
