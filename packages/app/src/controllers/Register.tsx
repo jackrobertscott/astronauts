@@ -11,10 +11,10 @@ import { Input } from '../components/Input';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
 import { Seperator } from '../components/Seperator';
-import { mutationConnection } from '../services/mutationConnection';
 import { authStore } from '../services/authStore';
+import { mutation } from '../services/apollo';
 
-export const RegisterUser = mutationConnection({
+export const RegisterUser = mutation({
   action: gql`
     mutation RegisterUser($credentials: UserCredentialsInput!) {
       usersRegister(credentials: $credentials) {
@@ -55,7 +55,9 @@ export const Register: FunctionComponent<{}> = () => {
         },
       })
       .then(({ usersRegister }: IRegisterUser) => {
-        storeAuth.change({ token: usersRegister.token });
+        const data = { token: usersRegister.token };
+        localStorage.setItem('auth', JSON.stringify(data));
+        storeAuth.change(data);
         address.change('/account');
       });
   };

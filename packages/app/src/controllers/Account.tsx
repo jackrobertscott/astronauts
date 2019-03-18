@@ -4,10 +4,9 @@ import gql from 'graphql-tag';
 import { Input } from '../components/Input';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
-import { mutationConnection } from '../services/mutationConnection';
-import { queryConnection } from '../services/queryConnection';
+import { query, mutation } from '../services/apollo';
 
-export const LoadUserAccount = queryConnection({
+export const LoadUserAccount = query({
   action: gql`
     mutation LoadUserAccount {
       usersMe {
@@ -29,7 +28,7 @@ export interface ILoadUserAccount {
   };
 }
 
-export const SaveUserAccount = mutationConnection({
+export const SaveUserAccount = mutation({
   action: gql`
     mutation SaveUserAccount($id: String!) {
       usersEdit(id: $id) {
@@ -55,6 +54,7 @@ export const Account: FunctionComponent<{}> = () => {
   useEffect(() => {
     actionLoadUserAccount.execute();
   }, []);
+  console.log(actionLoadUserAccount.value);
   const account = useComplex();
   const name = useString(account.operate('name'));
   const email = useString(account.operate('email'));
