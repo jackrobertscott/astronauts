@@ -1,50 +1,67 @@
-import React, { useEffect, FunctionComponent } from 'react';
-import { useConnection, Frame, useAddress } from 'nuggets';
+import React, { FunctionComponent } from 'react';
+import {
+  useConnection,
+  useAddress,
+  useComplex,
+  useString,
+  Text,
+} from 'nuggets';
 import gql from 'graphql-tag';
 import { Input } from '../components/Input';
 import { queryConnection } from '../services/queryConnection';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
+import { Seperator } from '../components/Seperator';
+import { mutationConnection } from '../services/mutationConnection';
 
-export interface IGetUser {
-  projectsAll: Array<{
-    id: string;
-    name: string;
-  }>;
-}
-
-export const GetUser = gql`
-  query GetUser {
-    projectsAll {
-      id
-      name
+export const LoginUser = gql`
+  mutation LoginUser($credentials: UserCredentialsInput!) {
+    usersLogin(credentials: $credentials) {
+      token
+      user {
+        id
+      }
     }
   }
 `;
 
+export interface ILoginUser {
+  usersLogin: {
+    token: string;
+    user: {
+      id: string;
+    };
+  };
+}
+
 export const Login: FunctionComponent<{}> = () => {
-  const { change: navigate } = useAddress();
-  const { value, execute } = useConnection<IGetUser>({
-    connection: queryConnection({ query: GetUser }),
+  const address = useAddress();
+  const actionLogin = useConnection<ILoginUser>({
+    connection: mutationConnection({ action: LoginUser }),
   });
-  useEffect(() => execute(), []);
+  const credentials = useComplex();
+  const username = useString(credentials.operate('username'));
+  const password = useString(credentials.operate('password'));
+  const submit = () => {
+    actionLogin.execute({
+      variables: {
+        credentials: credentials.value,
+      },
+    });
+  };
   return (
     <Main>
-      <Input label="Username" placeholder="E.g. jack" />
-      <Input label="Password" placeholder="**********" />
-      <Frame
-        styles={{
-          direction: 'right',
-          force: 'between',
-        }}
-      >
-        <Button value="Login" click={() => navigate('/login')} />
+      <Input {...username} label="Username" placeholder="E.g. jack" />
+      <Input {...password} label="Password" placeholder="**********" />
+      {actionLogin.error && <Text value={actionLogin.error.message} />}
+      <Seperator>
+        <Button value="Login" click={submit} />
         <Button
           value="Register"
-          click={() => navigate('/register')}
+          click={() => address.change('/register')}
           subtle={true}
         />
-      </Frame>
+      </Seperator>
     </Main>
   );
 };

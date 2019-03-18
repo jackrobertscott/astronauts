@@ -9,7 +9,9 @@ export interface IQueryConnection {
 }
 
 export const mutationConnection = createConnection({
-  handler: ({ mutation, variables }) => {
-    return apollo.mutate({ mutation, variables }).then(({ data }) => data);
+  handler: ({ action, variables }) => {
+    return apollo
+      .mutate({ mutation: action, variables })
+      .then(({ data }) => data);
   },
 });
