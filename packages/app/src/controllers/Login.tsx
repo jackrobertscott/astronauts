@@ -4,26 +4,28 @@ import {
   useAddress,
   useComplex,
   useString,
-  Text,
+  useStore,
 } from 'nuggets';
 import gql from 'graphql-tag';
 import { Input } from '../components/Input';
-import { queryConnection } from '../services/queryConnection';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
 import { Seperator } from '../components/Seperator';
 import { mutationConnection } from '../services/mutationConnection';
+import { authStore } from '../services/authStore';
 
-export const LoginUser = gql`
-  mutation LoginUser($credentials: UserCredentialsInput!) {
-    usersLogin(credentials: $credentials) {
-      token
-      user {
-        id
+export const LoginUser = mutationConnection({
+  action: gql`
+    mutation LoginUser($credentials: UserCredentialsInput!) {
+      usersLogin(credentials: $credentials) {
+        token
+        user {
+          id
+        }
       }
     }
-  }
-`;
+  `,
+});
 
 export interface ILoginUser {
   usersLogin: {
@@ -36,18 +38,22 @@ export interface ILoginUser {
 
 export const Login: FunctionComponent<{}> = () => {
   const address = useAddress();
-  const actionLogin = useConnection<ILoginUser>({
-    connection: mutationConnection({ action: LoginUser }),
-  });
+  const actionLogin = useConnection<ILoginUser>({ connection: LoginUser });
+  const storeAuth = useStore({ store: authStore });
   const credentials = useComplex();
   const username = useString(credentials.operate('username'));
   const password = useString(credentials.operate('password'));
   const submit = () => {
-    actionLogin.execute({
-      variables: {
-        credentials: credentials.value,
-      },
-    });
+    actionLogin
+      .execute({
+        variables: {
+          credentials: credentials.value,
+        },
+      })
+      .then(({ usersLogin }: ILoginUser) => {
+        storeAuth.change({ token: usersLogin.token });
+        address.change('/account');
+      });
   };
   return (
     <Main>
