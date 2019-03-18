@@ -52,8 +52,12 @@ export const Login: FunctionComponent<{}> = () => {
   return (
     <Main>
       <Input {...username} label="Username" placeholder="E.g. jack" />
-      <Input {...password} label="Password" placeholder="**********" />
-      {actionLogin.error && <Text value={actionLogin.error.message} />}
+      <Input
+        {...password}
+        label="Password"
+        placeholder="**********"
+        type="password"
+      />
       <Seperator>
         <Button value="Login" click={submit} />
         <Button
