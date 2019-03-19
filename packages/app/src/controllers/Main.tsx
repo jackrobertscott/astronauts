@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { useAddress, useStore } from 'nuggets';
+import React, { FunctionComponent } from 'react';
+import { useAddress } from 'nuggets';
 import { Login } from './Login';
 import { Register } from './Register';
 import { Account } from './Account';
@@ -9,23 +9,25 @@ import { auth } from '../services/auth';
 export interface IMainProps {}
 
 export const Main: FunctionComponent<IMainProps> = () => {
-  const { match } = useAddress();
+  const address = useAddress();
   const current = [
-    { path: '/login', exact: true, route: Login },
+    { path: '/login', route: Login },
     { path: '/register', route: Register },
-    { path: '/account', route: Account, guard: () => !!auth.access().token },
+    { path: '/account', route: Account, private: true },
     {
       path: '/developers',
       route: Developers,
-      guard: () => !!auth.access().token,
+      private: true,
     },
-  ].find(({ path, exact }) => match(path, { exact }));
-  if (current) {
-    const Component = current.route;
-    if (current.guard && !current.guard()) {
-      return <div>No access.</div>;
-    }
-    return <Component />;
+  ].find(address.match);
+  if (!current) {
+    address.change('/login');
+    return <div>Loading...</div>;
   }
-  return <div>Not found.</div>;
+  if (current.private && !auth.access().token) {
+    address.change('/login');
+    return <div>Loading...</div>;
+  }
+  const { route: Component } = current;
+  return <Component />;
 };

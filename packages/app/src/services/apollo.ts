@@ -1,12 +1,12 @@
 import ApolloClient, { Operation, DocumentNode } from 'apollo-boost';
 import config from '../config';
-import { authStore } from './authStore';
 import { createConnection } from 'nuggets';
+import { auth } from './auth';
 
 export const apollo = new ApolloClient({
   uri: config.urls.api,
   request: async (operation: Operation) => {
-    const { token } = authStore.state();
+    const { token } = auth.access();
     if (token) {
       operation.setContext({
         headers: {
