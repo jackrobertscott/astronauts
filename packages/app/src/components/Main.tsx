@@ -3,9 +3,13 @@ import { Frame, Text } from 'nuggets';
 
 export type IMainProps = {
   children: any;
+  dropdown?: any;
 };
 
-export const Main: FunctionComponent<IMainProps> = ({ children, ...props }) => (
+export const Main: FunctionComponent<IMainProps> = ({
+  children,
+  dropdown: Dropdown,
+}) => (
   <Frame
     styles={{
       color: '#FFFFFF',
@@ -45,13 +49,7 @@ export const Main: FunctionComponent<IMainProps> = ({ children, ...props }) => (
           value="Parley"
         />
       </Frame>
-      <Frame
-        styles={{
-          size: 20,
-          color: '#B2B2B2',
-          corners: 3,
-        }}
-      />
+      {Dropdown && <Dropdown />}
     </Frame>
     <Frame
       styles={{
