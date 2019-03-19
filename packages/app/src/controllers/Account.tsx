@@ -5,7 +5,6 @@ import { Input } from '../components/Input';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
 import { query, mutation } from '../services/apollo';
-import { DropMenu } from '../components/DropMenu';
 
 export const LoadUserAccount = query({
   action: gql`
@@ -71,7 +70,7 @@ export const Account: FunctionComponent<{}> = () => {
     });
   };
   return (
-    <Main dropdown={DropMenu}>
+    <Main>
       <Input {...name} label="Name" placeholder="E.g. Jack Scott" />
       <Input {...email} label="Email" placeholder="E.g. jack@example.com" />
       <Button value="Save" click={submit} />

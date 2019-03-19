@@ -1,15 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { Frame, Text } from 'nuggets';
+import { DropMenu } from './DropMenu';
 
 export type IMainProps = {
   children: any;
-  dropdown?: any;
 };
 
-export const Main: FunctionComponent<IMainProps> = ({
-  children,
-  dropdown: Dropdown,
-}) => (
+export const Main: FunctionComponent<IMainProps> = ({ children }) => (
   <Frame
     styles={{
       color: '#FFFFFF',
@@ -49,7 +46,9 @@ export const Main: FunctionComponent<IMainProps> = ({
           value="Parley"
         />
       </Frame>
-      {Dropdown && <Dropdown />}
+      <DropMenu
+        items={[{ name: 'Logout', action: () => console.log('Logout') }]}
+      />
     </Frame>
     <Frame
       styles={{
