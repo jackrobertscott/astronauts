@@ -4,32 +4,20 @@ import { Login } from './Login';
 import { Register } from './Register';
 import { Account } from './Account';
 import { Developers } from './Developers';
-import { authStore } from '../services/authStore';
+import { auth } from '../services/auth';
 
 export interface IMainProps {}
 
 export const Main: FunctionComponent<IMainProps> = () => {
-  const storeAuth = useStore({ store: authStore });
   const { match } = useAddress();
-  useEffect(() => {
-    try {
-      const data = localStorage.getItem('auth');
-      if (data) {
-        const okay = JSON.parse(data);
-        storeAuth.change(okay);
-      }
-    } catch (e) {
-      localStorage.removeItem('auth');
-    }
-  }, []);
   const current = [
     { path: '/login', exact: true, route: Login },
     { path: '/register', route: Register },
-    { path: '/account', route: Account, guard: () => !!storeAuth.value.token },
+    { path: '/account', route: Account, guard: () => !!auth.access().token },
     {
       path: '/developers',
       route: Developers,
-      guard: () => !!storeAuth.value.token,
+      guard: () => !!auth.access().token,
     },
   ].find(({ path, exact }) => match(path, { exact }));
   if (current) {

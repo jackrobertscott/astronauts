@@ -1,18 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import {
-  useConnection,
-  useAddress,
-  useComplex,
-  useString,
-  useStore,
-} from 'nuggets';
+import { useConnection, useAddress, useComplex, useString } from 'nuggets';
 import gql from 'graphql-tag';
 import { Input } from '../components/Input';
 import { Main } from '../components/Main';
 import { Button } from '../components/Button';
 import { Seperator } from '../components/Seperator';
-import { authStore } from '../services/authStore';
 import { mutation } from '../services/apollo';
+import { auth } from '../services/auth';
 
 export const RegisterUser = mutation({
   action: gql`
@@ -41,7 +35,6 @@ export const Register: FunctionComponent<{}> = () => {
   const actionRegister = useConnection<IRegisterUser>({
     connection: RegisterUser,
   });
-  const storeAuth = useStore({ store: authStore });
   const credentials = useComplex();
   const name = useString(credentials.operate('name'));
   const username = useString(credentials.operate('username'));
@@ -56,8 +49,7 @@ export const Register: FunctionComponent<{}> = () => {
       })
       .then(({ usersRegister }: IRegisterUser) => {
         const data = { token: usersRegister.token };
-        localStorage.setItem('auth', JSON.stringify(data));
-        storeAuth.change(data);
+        auth.save(data);
         address.change('/account');
       });
   };
