@@ -1,7 +1,9 @@
 import React from 'react';
 import { Main } from './controllers/Main';
+import { Background } from './components/Background';
 
-/**
- * Hooks don't work on the root component...
- */
-export default () => <Main />;
+export default () => (
+  <Background>
+    <Main />
+  </Background>
+);
