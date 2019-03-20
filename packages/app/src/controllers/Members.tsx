@@ -39,11 +39,26 @@ export const Members: FunctionComponent<{}> = () => {
     });
   }, []);
   return (
-    <Frame>
+    <Frame
+      styles={{
+        space: {
+          top: 20,
+        },
+      }}
+    >
       {actionLoadMembers.value &&
         actionLoadMembers.value.membershipsAll.map(({ id, user }) => (
-          <Frame key={id}>
-            <Text value={user.name} />
+          <Frame
+            key={id}
+            styles={{
+              space: 10,
+              corners: 3,
+              borders: {
+                color: '#FFFFFF',
+              },
+            }}
+          >
+            <Text styles={{ color: '#FFFFFF' }} value={user.name} />
           </Frame>
         ))}
     </Frame>

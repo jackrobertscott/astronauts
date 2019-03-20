@@ -80,6 +80,7 @@ export const Large: FunctionComponent<ILargeProps> = ({ children }) => {
       </Frame>
       <Frame
         styles={{
+          grow: true,
           space: {
             top: 10,
             sides: 20,
