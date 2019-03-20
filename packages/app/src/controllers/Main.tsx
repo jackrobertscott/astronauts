@@ -6,9 +6,7 @@ import { Account } from './Account';
 import { Developers } from './Developers';
 import { auth } from '../services/auth';
 
-export interface IMainProps {}
-
-export const Main: FunctionComponent<IMainProps> = () => {
+export const Main: FunctionComponent<{}> = () => {
   const address = useAddress();
   const current = [
     { path: '/login', route: Login },

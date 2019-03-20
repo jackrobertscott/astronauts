@@ -3,33 +3,37 @@ import { Frame, Text, useAddress } from 'nuggets';
 
 export type ILargeListItemProps = {
   label: string;
-  click: () => any;
+  path: string;
 };
 
-const ListItem: FunctionComponent<ILargeListItemProps> = ({ label, click }) => (
-  <Frame
-    styles={{
-      space: 15,
-      cursor: 'pointer',
-      corners: 5,
-      hover: {
-        color: 'rgba(255, 255, 255, 0.05)',
-      },
-    }}
-    events={{
-      click,
-    }}
-  >
-    <Text styles={{ color: '#FFFFFF' }} value={label} />
-  </Frame>
-);
+const ListItem: FunctionComponent<ILargeListItemProps> = ({ label, path }) => {
+  const address = useAddress();
+  const active = address.match({ path });
+  return (
+    <Frame
+      styles={{
+        space: 15,
+        cursor: 'pointer',
+        corners: 5,
+        color: active ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
+        hover: {
+          color: 'rgba(255, 255, 255, 0.05)',
+        },
+      }}
+      events={{
+        click: () => address.change(path),
+      }}
+    >
+      <Text styles={{ color: '#FFFFFF' }} value={label} />
+    </Frame>
+  );
+};
 
 export type ILargeProps = {
   children: any;
 };
 
 export const Large: FunctionComponent<ILargeProps> = ({ children }) => {
-  const address = useAddress();
   return (
     <Frame
       styles={{
@@ -69,24 +73,21 @@ export const Large: FunctionComponent<ILargeProps> = ({ children }) => {
           },
         }}
       >
-        <ListItem
-          label="Members"
-          click={() => address.change('/developers/members')}
-        />
-        <ListItem
-          label="Users"
-          click={() => address.change('/developers/users')}
-        />
-        <ListItem
-          label="Subscriptions"
-          click={() => address.change('/developers/subscriptions')}
-        />
-        <ListItem
-          label="Receipts"
-          click={() => address.change('/developers/receipts')}
-        />
+        <ListItem label="Members" path="/developers/members" />
+        <ListItem label="Users" path="/developers/users" />
+        <ListItem label="Subscriptions" path="/developers/subscriptions" />
+        <ListItem label="Receipts" path="/developers/receipts" />
       </Frame>
-      <Frame>{children}</Frame>
+      <Frame
+        styles={{
+          space: {
+            top: 10,
+            sides: 20,
+          },
+        }}
+      >
+        {children}
+      </Frame>
     </Frame>
   );
 };
